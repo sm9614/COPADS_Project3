@@ -12,3 +12,4 @@ C:\Users\soban\OneDrive\Documents\GitHub\COPADS_Project3\Project3\obj\Debug\net8
 C:\Users\soban\OneDrive\Documents\GitHub\COPADS_Project3\Project3\obj\Debug\net8.0\Project3.pdb
 C:\Users\soban\OneDrive\Documents\GitHub\COPADS_Project3\Project3\obj\Debug\net8.0\Project3.genruntimeconfig.cache
 C:\Users\soban\OneDrive\Documents\GitHub\COPADS_Project3\Project3\obj\Debug\net8.0\ref\Project3.dll
+C:\Users\soban\OneDrive\Documents\GitHub\COPADS_Project3\Project3\obj\Debug\net8.0\Project3.sourcelink.json

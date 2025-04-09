@@ -1,4 +1,6 @@
-﻿
+﻿using System.IO;
+using System.Text;
+
 namespace Project
 {
     class Program
@@ -47,7 +49,7 @@ namespace Project
                         return;
                     }
                     string plaintext = args[1];
-                    Console.WriteLine(Encrypt(plaintext));
+                    Console.WriteLine("The ciphertext is: " + Encrypt(plaintext));
                     break;
 
                 case "decrypt":
@@ -126,9 +128,52 @@ namespace Project
             throw new NotImplementedException();
         }
 
-        private static bool Encrypt(string plaintext)
+        private static string Encrypt(string plaintext)
         {
-            throw new NotImplementedException();
+            string? keystream = "";
+            try
+            {
+                StreamReader sr = new StreamReader("keystream.txt");
+                keystream = sr.ReadLine();
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+
+            int maxLength = Math.Max(keystream.Length, plaintext.Length);
+
+
+            // Adds leading 0's to the smaller bit string
+            if (keystream.Length < maxLength)
+            {
+                keystream = keystream.PadLeft(maxLength, '0');
+            }
+            else
+            {
+                plaintext = plaintext.PadLeft(maxLength, '0');
+            }
+
+            StringBuilder ciphertext = new StringBuilder();
+            // Does the XOR by going through each individual bit
+            for (int i = 0; i < maxLength; i++)
+            {
+                if (keystream[i] == '1' && plaintext[i] == '1')
+                {
+                    ciphertext.Append('0');
+                }
+                else if ((keystream[i] == '1' && plaintext[i] == '0') || (keystream[i] == '0' && plaintext[i] == '1'))
+                {
+                    ciphertext.Append('1');
+                }
+                else
+                {
+                    ciphertext.Append('0');
+                }
+            }
+
+            return ciphertext.ToString();
         }
 
         private static void GenerateKeyStream(string seed, int tap, int step)
@@ -142,7 +187,17 @@ namespace Project
                 Console.WriteLine(seed + " " + lsb);
                 keystream.Add(lsb);
             }
-            File.WriteAllText("keystream.txt", string.Join("", keystream));
+
+            try
+            {
+                StreamWriter sw = new StreamWriter("keystream.txt");
+                sw.WriteLine(string.Join("", keystream));
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
             Console.WriteLine("The Keystream: " + string.Join("", keystream));
 
         }
@@ -150,7 +205,7 @@ namespace Project
         private static string Cipher(string seed, int tap)
         {
 
-            int value = seed[tap]  - '0'; // - '0' converts the ascii number to the actual value
+            int value = seed[tap] - '0'; // - '0' converts the ascii number to the actual value
             int msb = seed[0] - '0';
             int newValue = value ^ msb;
             string newSeed = seed.Substring(1);
