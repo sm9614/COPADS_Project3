@@ -59,7 +59,7 @@ namespace Project
                         return;
                     }
                     string ciphertext = args[1];
-                    Console.WriteLine(Decrypt(ciphertext));
+                    Console.WriteLine("The plaintext is: " + Decrypt(ciphertext));
                     break;
 
                 case "triplebits":
@@ -123,9 +123,10 @@ namespace Project
             throw new NotImplementedException();
         }
 
-        private static bool Decrypt(string ciphertext)
+        private static string Decrypt(string ciphertext)
         {
-            throw new NotImplementedException();
+            // Since Encrypting the ciphertext gives the plain text we can just call Encrypt on the ciphertext
+            return Encrypt(ciphertext);
         }
 
         private static string Encrypt(string plaintext)
@@ -142,38 +143,7 @@ namespace Project
                 Console.WriteLine("Error: " + e.Message);
             }
 
-            int maxLength = Math.Max(keystream.Length, plaintext.Length);
-
-
-            // Adds leading 0's to the smaller bit string
-            if (keystream.Length < maxLength)
-            {
-                keystream = keystream.PadLeft(maxLength, '0');
-            }
-            else
-            {
-                plaintext = plaintext.PadLeft(maxLength, '0');
-            }
-
-            StringBuilder ciphertext = new StringBuilder();
-            // Does the XOR by going through each individual bit
-            for (int i = 0; i < maxLength; i++)
-            {
-                if (keystream[i] == '1' && plaintext[i] == '1')
-                {
-                    ciphertext.Append('0');
-                }
-                else if ((keystream[i] == '1' && plaintext[i] == '0') || (keystream[i] == '0' && plaintext[i] == '1'))
-                {
-                    ciphertext.Append('1');
-                }
-                else
-                {
-                    ciphertext.Append('0');
-                }
-            }
-
-            return ciphertext.ToString();
+            return XOR(keystream, plaintext);
         }
 
         private static void GenerateKeyStream(string seed, int tap, int step)
@@ -212,6 +182,41 @@ namespace Project
             newSeed += newValue.ToString();
             return newSeed;
 
+        }
+
+        private static string XOR (string str1, string str2)
+        {
+            int maxLength = Math.Max(str1.Length, str2.Length);
+
+            // Adds leading 0's to the smaller bit string
+            if (str1.Length < maxLength)
+            {
+                str1 = str1.PadLeft(maxLength, '0');
+            }
+            else
+            {
+                str2 = str2.PadLeft(maxLength, '0');
+            }
+
+            StringBuilder XORStr = new StringBuilder();
+            // Does the XOR by going through each individual bit
+            for (int i = 0; i < maxLength; i++)
+            {
+                if (str1[i] == '1' && str2[i] == '1')
+                {
+                    XORStr.Append('0');
+                }
+                else if ((str1[i] == '1' && str2[i] == '0') || (str1[i] == '0' && str2[i] == '1'))
+                {
+                    XORStr.Append('1');
+                }
+                else
+                {
+                    XORStr.Append('0');
+                }
+            }
+
+            return XORStr.ToString();
         }
     }
 }
