@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using SkiaSharp;
 
 namespace Project
@@ -97,7 +96,7 @@ namespace Project
                     imagefile = args[1];
                     seed = args[2];
                     int.TryParse(args[3], out tap);
-                    Console.WriteLine(DecryptImage(imagefile, seed, tap));
+                    DecryptImage(imagefile, seed, tap);
                     break;
 
                 default:
@@ -109,10 +108,53 @@ namespace Project
 
         }
 
-        private static bool DecryptImage(string imagefile, string seed, int tap)
+        private static void DecryptImage(string imagefile, string seed, int tap)
         {
-            throw new NotImplementedException();
+            // Decrypting is the same as encrypting twice so the code is the same except for the filename
+            try
+            {
+                FileStream fsRead = File.OpenRead(imagefile);
+                SKBitmap bitmap = SKBitmap.Decode(fsRead);
+                string newSeed = Cipher(seed, tap);
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    for (int y = 0; y < bitmap.Height; y++)
+                    {
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap);
+
+                        byte red = bitmap.GetPixel(x, y).Red;
+                        byte newRed = (byte)(red ^ random8BitRed);
+
+                        byte green = bitmap.GetPixel(x, y).Green;
+                        byte newGreen = (byte)(green ^ random8BitGreen);
+
+                        byte blue = bitmap.GetPixel(x, y).Blue;
+                        byte newBlue = (byte)(blue ^ random8BitBlue);
+
+                        SKColor newColor = new SKColor(newRed, newGreen, newBlue);
+                        bitmap.SetPixel(x, y, newColor);
+                    }
+                }
+                try
+                {
+                    FileStream fsWrite = File.OpenWrite("flowerNEW.png");
+                    bitmap.Encode(fsWrite, SKEncodedImageFormat.Png, 100);
+                    fsWrite.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                fsRead.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
         }
+        
 
         private static void EncryptImage(string imagefile, string seed, int tap)
         {
