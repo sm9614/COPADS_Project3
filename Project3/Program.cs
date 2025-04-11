@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace Project
 {
@@ -72,7 +71,7 @@ namespace Project
                     int.TryParse(args[2], out tap);
                     int.TryParse(args[3], out step);
                     int.TryParse(args[4], out int iteration);
-                    Console.WriteLine(TripleBits(seed, tap, step, iteration));
+                    TripleBits(seed, tap, step, iteration);
                     break;
 
                 case "encryptimage":
@@ -118,9 +117,20 @@ namespace Project
             throw new NotImplementedException();
         }
 
-        private static bool TripleBits(string seed, int tap, int step, int iteration)
+        private static void TripleBits(string seed, int tap, int step, int iteration)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(seed + " -seed");
+            for (int i = 0; i < iteration; i++)
+            {   
+                int value = 1;
+                for (int j = 0; j < step; j++)
+                {
+                    seed = Cipher(seed, tap);
+                    int lsb = (int)char.GetNumericValue(seed[seed.Length - 1]);
+                    value = value * 3 + lsb;
+                }
+                Console.WriteLine(seed + " " + value);
+            }
         }
 
         private static string Decrypt(string ciphertext)
@@ -153,7 +163,7 @@ namespace Project
             for (int i = 0; i < step; i++)
             {
                 seed = Cipher(seed, tap);
-                int lsb = seed[seed.Length - 1] - '0'; // - '0' converts the ascii number to the actual value
+                int lsb = (int)char.GetNumericValue(seed[seed.Length - 1]);
                 Console.WriteLine(seed + " " + lsb);
                 keystream.Add(lsb);
             }
@@ -175,8 +185,8 @@ namespace Project
         private static string Cipher(string seed, int tap)
         {
 
-            int value = seed[tap] - '0'; // - '0' converts the ascii number to the actual value
-            int msb = seed[0] - '0';
+            int value = (int)char.GetNumericValue(seed[tap]);
+            int msb = (int)char.GetNumericValue(seed[0]);
             int newValue = value ^ msb;
             string newSeed = seed.Substring(1);
             newSeed += newValue.ToString();
