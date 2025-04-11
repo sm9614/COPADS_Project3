@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "UcgXkh8Wous=",
+  "dgSpecHash": "Noh9oQEgd6k=",
   "success": true,
   "projectFilePath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Project3.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\soban\\.nuget\\packages\\skiasharp\\3.116.1\\skiasharp.3.116.1.nupkg.sha512",
+    "C:\\Users\\soban\\.nuget\\packages\\skiasharp.nativeassets.linux\\3.116.1\\skiasharp.nativeassets.linux.3.116.1.nupkg.sha512",
+    "C:\\Users\\soban\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.116.1\\skiasharp.nativeassets.macos.3.116.1.nupkg.sha512",
+    "C:\\Users\\soban\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.116.1\\skiasharp.nativeassets.win32.3.116.1.nupkg.sha512"
+  ],
   "logs": []
 }

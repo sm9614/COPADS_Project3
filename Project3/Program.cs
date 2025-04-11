@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
+using SkiaSharp;
 
 namespace Project
 {
@@ -83,7 +85,7 @@ namespace Project
                     string imagefile = args[1];
                     seed = args[2];
                     int.TryParse(args[3], out tap);
-                    Console.WriteLine(EncryptImage(imagefile, seed, tap));
+                    EncryptImage(imagefile, seed, tap);
                     break;
 
                 case "decryptimage":
@@ -112,16 +114,57 @@ namespace Project
             throw new NotImplementedException();
         }
 
-        private static bool EncryptImage(string imagefile, string seed, int tap)
+        private static void EncryptImage(string imagefile, string seed, int tap)
         {
-            throw new NotImplementedException();
+            try
+            {
+                FileStream fsRead = File.OpenRead(imagefile);
+                SKBitmap bitmap = SKBitmap.Decode(fsRead);
+                string newSeed = Cipher(seed, tap);
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    for (int y = 0; y < bitmap.Height; y++)
+                    {
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap);
+
+                        byte red = bitmap.GetPixel(x, y).Red;
+                        byte newRed = (byte)(red ^ random8BitRed);
+
+                        byte green = bitmap.GetPixel(x, y).Green;
+                        byte newGreen = (byte)(green ^ random8BitGreen);
+
+                        byte blue = bitmap.GetPixel(x, y).Blue;
+                        byte newBlue = (byte)(blue ^ random8BitBlue);
+
+                        SKColor newColor = new SKColor(newRed, newGreen, newBlue);
+                        bitmap.SetPixel(x, y, newColor);
+                    }
+                }
+                try
+                {
+                    FileStream fsWrite = File.OpenWrite("flowerENCRYPTED.png");
+                    bitmap.Encode(fsWrite, SKEncodedImageFormat.Png, 100);
+                    fsWrite.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                fsRead.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
         }
 
         private static void TripleBits(string seed, int tap, int step, int iteration)
         {
             Console.WriteLine(seed + " -seed");
             for (int i = 0; i < iteration; i++)
-            {   
+            {
                 int value = 1;
                 for (int j = 0; j < step; j++)
                 {
@@ -135,7 +178,8 @@ namespace Project
 
         private static string Decrypt(string ciphertext)
         {
-            // Since Encrypting the ciphertext gives the plain text we can just call Encrypt on the ciphertext
+            // Since Encrypting the ciphertext gives the plain text we can just call 
+            // Encrypt on the ciphertext to get the plaintext
             return Encrypt(ciphertext);
         }
 
@@ -194,7 +238,7 @@ namespace Project
 
         }
 
-        private static string XOR (string str1, string str2)
+        private static string XOR(string str1, string str2)
         {
             int maxLength = Math.Max(str1.Length, str2.Length);
 
@@ -227,6 +271,17 @@ namespace Project
             }
 
             return XORStr.ToString();
+        }
+        private static byte GenerateRandom8Bit(ref string seed, int tap)
+        {
+            StringBuilder random8Bit = new StringBuilder();
+            for (int i = 0; i < 8; i++)
+            {
+                seed = Cipher(seed, tap);
+                int lsb = (int)char.GetNumericValue(seed[seed.Length - 1]);
+                random8Bit.Append(lsb);
+            }
+            return Convert.ToByte(random8Bit.ToString(), 2);
         }
     }
 }
