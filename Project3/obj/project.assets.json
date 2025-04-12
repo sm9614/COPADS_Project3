@@ -246,9 +246,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Project3.csproj",
-      "projectName": "Project3",
-      "projectPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Project3.csproj",
+      "projectUniqueName": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj",
+      "projectName": "Lfsr",
+      "projectPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj",
       "packagesPath": "C:\\Users\\soban\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\obj\\",
       "projectStyle": "PackageReference",

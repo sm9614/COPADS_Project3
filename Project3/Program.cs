@@ -120,9 +120,9 @@ namespace Project
                 {
                     for (int y = 0; y < bitmap.Height; y++)
                     {
-                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap);
-                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap);
-                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap);
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap+1);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap+2);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap+3);
 
                         byte red = bitmap.GetPixel(x, y).Red;
                         byte newRed = (byte)(red ^ random8BitRed);
@@ -167,9 +167,11 @@ namespace Project
                 {
                     for (int y = 0; y < bitmap.Height; y++)
                     {
-                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap);
-                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap);
-                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap);
+                        // Add numbers to the tap to improve encryption
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap+1);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap+2);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap+3);
+                        
 
                         byte red = bitmap.GetPixel(x, y).Red;
                         byte newRed = (byte)(red ^ random8BitRed);
