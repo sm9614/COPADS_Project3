@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ray9iaUYjPI=",
+  "dgSpecHash": "ZebGatyaQk4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj",
+  "projectFilePath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\Lfsr.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\soban\\.nuget\\packages\\skiasharp\\3.116.1\\skiasharp.3.116.1.nupkg.sha512",
     "C:\\Users\\soban\\.nuget\\packages\\skiasharp.nativeassets.linux\\3.116.1\\skiasharp.nativeassets.linux.3.116.1.nupkg.sha512",

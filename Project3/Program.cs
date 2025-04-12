@@ -25,7 +25,12 @@ namespace Project
                         return;
                     }
                     string seed = args[1];
-                    int.TryParse(args[2], out int tap);
+                    if (!int.TryParse(args[2], out int tap) || tap >= seed.Length || tap < 0)
+                    {
+                        Console.WriteLine("tap must be an int and less than the seeds length");
+                        return;
+                    }
+                    
                     string newSeed = Cipher(seed, tap);
                     Console.WriteLine(seed + " -seed \n" + newSeed + " " + newSeed[0]);
                     break;
@@ -37,8 +42,15 @@ namespace Project
                         return;
                     }
                     seed = args[1];
-                    int.TryParse(args[2], out tap);
-                    int.TryParse(args[3], out int step);
+                    if (!int.TryParse(args[2], out tap) || tap >= seed.Length || tap < 0)
+                    {
+                        Console.WriteLine("tap must be an int and less than the seeds length");
+                        return;
+                    }
+                    if (!int.TryParse(args[3], out int step))
+                    {
+                        Console.WriteLine("step must be an int");
+                    }
                     GenerateKeyStream(seed, tap, step);
                     break;
 
@@ -69,9 +81,19 @@ namespace Project
                         return;
                     }
                     seed = args[1];
-                    int.TryParse(args[2], out tap);
-                    int.TryParse(args[3], out step);
-                    int.TryParse(args[4], out int iteration);
+                    if (!int.TryParse(args[2], out tap) || tap >= seed.Length || tap < 0)
+                    {
+                        Console.WriteLine("tap must be an int and less than the seeds length");
+                        return;
+                    }
+                    if (!int.TryParse(args[3], out step))
+                    {
+                        Console.WriteLine("step must be an int");
+                    }
+                    if (!int.TryParse(args[4], out int iteration))
+                    {
+                        Console.WriteLine("iteration must be an int");
+                    }
                     TripleBits(seed, tap, step, iteration);
                     break;
 
@@ -272,14 +294,12 @@ namespace Project
 
         private static string Cipher(string seed, int tap)
         {
-
             int value = (int)char.GetNumericValue(seed[tap]);
             int msb = (int)char.GetNumericValue(seed[0]);
             int newValue = value ^ msb;
             string newSeed = seed.Substring(1);
             newSeed += newValue.ToString();
             return newSeed;
-
         }
 
         private static string XOR(string str1, string str2)

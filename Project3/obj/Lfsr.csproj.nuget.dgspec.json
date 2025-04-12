@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj": {}
+    "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\Lfsr.csproj": {}
   },
   "projects": {
-    "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj": {
+    "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\Lfsr.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj",
+        "projectUniqueName": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\Lfsr.csproj",
         "projectName": "Lfsr",
-        "projectPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\Lfsr.csproj",
+        "projectPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\Lfsr.csproj",
         "packagesPath": "C:\\Users\\soban\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\Project3\\obj\\",
+        "outputPath": "C:\\Users\\soban\\OneDrive\\Documents\\GitHub\\COPADS_Project3\\project3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\soban\\AppData\\Roaming\\NuGet\\NuGet.Config"
