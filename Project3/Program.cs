@@ -25,12 +25,17 @@ namespace Project
                         return;
                     }
                     string seed = args[1];
+                    if (string.IsNullOrEmpty(seed))
+                    {
+                        Console.WriteLine("seed can't be empty");
+                        return;
+                    }
                     if (!int.TryParse(args[2], out int tap) || tap >= seed.Length || tap < 0)
                     {
                         Console.WriteLine("tap must be an int and less than the seeds length");
                         return;
                     }
-                    
+
                     string newSeed = Cipher(seed, tap);
                     Console.WriteLine(seed + " -seed \n" + newSeed + " " + newSeed[0]);
                     break;
@@ -42,6 +47,11 @@ namespace Project
                         return;
                     }
                     seed = args[1];
+                    if (string.IsNullOrEmpty(seed))
+                    {
+                        Console.WriteLine("seed can't be empty");
+                        return;
+                    }
                     if (!int.TryParse(args[2], out tap) || tap >= seed.Length || tap < 0)
                     {
                         Console.WriteLine("tap must be an int and less than the seeds length");
@@ -50,6 +60,7 @@ namespace Project
                     if (!int.TryParse(args[3], out int step))
                     {
                         Console.WriteLine("step must be an int");
+                        return;
                     }
                     GenerateKeyStream(seed, tap, step);
                     break;
@@ -81,6 +92,11 @@ namespace Project
                         return;
                     }
                     seed = args[1];
+                    if (string.IsNullOrEmpty(seed))
+                    {
+                        Console.WriteLine("seed can't be empty");
+                        return;
+                    }
                     if (!int.TryParse(args[2], out tap) || tap >= seed.Length || tap < 0)
                     {
                         Console.WriteLine("tap must be an int and less than the seeds length");
@@ -89,10 +105,12 @@ namespace Project
                     if (!int.TryParse(args[3], out step))
                     {
                         Console.WriteLine("step must be an int");
+                        return;
                     }
                     if (!int.TryParse(args[4], out int iteration))
                     {
                         Console.WriteLine("iteration must be an int");
+                        return;
                     }
                     TripleBits(seed, tap, step, iteration);
                     break;
@@ -105,7 +123,16 @@ namespace Project
                     }
                     string imagefile = args[1];
                     seed = args[2];
-                    int.TryParse(args[3], out tap);
+                    if (string.IsNullOrEmpty(seed))
+                    {
+                        Console.WriteLine("seed can't be empty");
+                        return;
+                    }
+                    if (!int.TryParse(args[3], out tap) || tap >= seed.Length || tap < 0)
+                    {
+                        Console.WriteLine("tap must be an int and less than the seeds length");
+                        return;
+                    }
                     EncryptImage(imagefile, seed, tap);
                     break;
 
@@ -117,7 +144,16 @@ namespace Project
                     }
                     imagefile = args[1];
                     seed = args[2];
-                    int.TryParse(args[3], out tap);
+                    if (string.IsNullOrEmpty(seed))
+                    {
+                        Console.WriteLine("seed can't be empty");
+                        return;
+                    }
+                    if (!int.TryParse(args[3], out tap) || tap >= seed.Length || tap < 0)
+                    {
+                        Console.WriteLine("tap must be an int and less than the seeds length");
+                        return;
+                    }
                     DecryptImage(imagefile, seed, tap);
                     break;
 
@@ -130,6 +166,8 @@ namespace Project
 
         }
 
+        // This method decrypts a given image by performing XOR on its pixels 
+        // and then it creates the decrypted image called flowerNEW.png 
         private static void DecryptImage(string imagefile, string seed, int tap)
         {
             // Decrypting is the same as encrypting twice so the code is the same except for the filename
@@ -142,9 +180,9 @@ namespace Project
                 {
                     for (int y = 0; y < bitmap.Height; y++)
                     {
-                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap+1);
-                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap+2);
-                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap+3);
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap + 1);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap + 2);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap + 3);
 
                         byte red = bitmap.GetPixel(x, y).Red;
                         byte newRed = (byte)(red ^ random8BitRed);
@@ -176,8 +214,10 @@ namespace Project
                 Console.WriteLine("Error: " + e.Message);
             }
         }
-        
 
+
+        // This method encrypts a given image by performing XOR on its pixels 
+        // and then it creates the encrypted image called flowerENCRYPTED.png 
         private static void EncryptImage(string imagefile, string seed, int tap)
         {
             try
@@ -190,10 +230,10 @@ namespace Project
                     for (int y = 0; y < bitmap.Height; y++)
                     {
                         // Add numbers to the tap to improve encryption
-                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap+1);
-                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap+2);
-                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap+3);
-                        
+                        byte random8BitRed = GenerateRandom8Bit(ref newSeed, tap + 1);
+                        byte random8BitGreen = GenerateRandom8Bit(ref newSeed, tap + 2);
+                        byte random8BitBlue = GenerateRandom8Bit(ref newSeed, tap + 3);
+
 
                         byte red = bitmap.GetPixel(x, y).Red;
                         byte newRed = (byte)(red ^ random8BitRed);
@@ -226,6 +266,8 @@ namespace Project
             }
         }
 
+        // This method runs the lfsr algorithm and then for then 
+        // it multiplys the accumulator by 3 and adds the least significant bit
         private static void TripleBits(string seed, int tap, int step, int iteration)
         {
             Console.WriteLine(seed + " -seed");
@@ -242,6 +284,8 @@ namespace Project
             }
         }
 
+         // This method loads the keystream from a file then decrypts the 
+        // ciphertext by performing an XOR of the plaintext and keystream
         private static string Decrypt(string ciphertext)
         {
             // Since Encrypting the ciphertext gives the plain text we can just call 
@@ -249,6 +293,8 @@ namespace Project
             return Encrypt(ciphertext);
         }
 
+        // This method loads the keystream from a file then encrypts the 
+        // plaintext by performing an XOR of the plaintext and keystream
         private static string Encrypt(string plaintext)
         {
             string? keystream = "";
@@ -261,11 +307,19 @@ namespace Project
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
+                return "";
+            }
+            if (string.IsNullOrEmpty(keystream))
+            {
+                Console.WriteLine("keystream can't be empty");
+                return "";
             }
 
             return XOR(keystream, plaintext);
         }
 
+        // This method generates the keystream by repeatedly performing the lfsr algorithm 
+        // then it write the keystream onto a file named keystream.txt
         private static void GenerateKeyStream(string seed, int tap, int step)
         {
             Console.WriteLine(seed + " -seed");
@@ -292,6 +346,7 @@ namespace Project
 
         }
 
+        // This method performs one step of the lfsr algorithm 
         private static string Cipher(string seed, int tap)
         {
             int value = (int)char.GetNumericValue(seed[tap]);
@@ -302,6 +357,8 @@ namespace Project
             return newSeed;
         }
 
+        // This method performs an XOR between two strings 
+        // and pads them to make sure they are the same length
         private static string XOR(string str1, string str2)
         {
             int maxLength = Math.Max(str1.Length, str2.Length);
@@ -336,6 +393,9 @@ namespace Project
 
             return XORStr.ToString();
         }
+
+        // This is a helper function that generates 8 random bits using the 
+        // Lfsr algorithm 8 times and storing the last bits
         private static byte GenerateRandom8Bit(ref string seed, int tap)
         {
             StringBuilder random8Bit = new StringBuilder();
